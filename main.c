@@ -1,20 +1,20 @@
 #include "monty.h"
 
 /**
- * main - reads from monty file
- * @argc: number of args passed
- * @argv: array of args
- * Return: EXIT_FAILURE if failure else 0
+ * main - monty file reader
+ * @argc: arg count
+ * @argv: arg array
+ * Return: EXIT_FAILURE for failure else 0 for success
  */
 int main(int argc, char **argv)
 {
 	FILE *monty_file;
-	const size_t line_size = 300;
-	char *code_line;
+	const size_t size_line = 300;
 	unsigned int line_number = 0;
-	int opcode_err;
+	int err;
+	char *line;
 	stack_t *LIFO;
-	stack_t *current;
+	stack_t *curr;
 
 	if (argc != 2)
 	{
@@ -27,29 +27,29 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	code_line = malloc(line_size);
-	if (!code_line)
+	line = malloc(size_line);
+	if (!line)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
 	LIFO = NULL;
-	while (fgets(code_line, line_size, monty_file) != NULL)
+	while (fgets(line, size_line, monty_file) != NULL)
 	{
 		line_number++;
-		if ((opcode_err = execute_opcode(code_line, &LIFO, line_number)) < 0)
+		if ((err = execute_opcode(line, &LIFO, line_number)) < 0)
 		{
 			exit(EXIT_FAILURE);
 		}
 	}
-	if (code_line)
-		free(code_line);
+	if (line)
+		free(line);
 	fclose(monty_file);
 	while (LIFO)
 	{
-		current = LIFO;
+		curr = LIFO;
 		LIFO = LIFO->next;
-		free(current);
+		free(curr);
 	}
 	return (0);
 }
