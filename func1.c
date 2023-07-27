@@ -1,14 +1,14 @@
 #include "monty.h"
 
 /**
- * _push - adds item to top of stack
- * @stack: pointer to first element in stack
- * @line_number: line number of code
- * Return: none
+ * _push - item added to top of the stack
+ * @stack: first element in stack pointer
+ * @line_number: code line number
+ * Return: no return value
  */
 void _push(stack_t **stack, unsigned int line_number)
 {
-	int opcode_argint;
+	int oc_argint;
 	char *opcode_arg = global_vars.opcode_arg;
 
 	if (!opcode_arg)
@@ -16,40 +16,40 @@ void _push(stack_t **stack, unsigned int line_number)
 		fprintf(stderr, "L%d: usage: push integer\n", line_number);
 		global_vars.opcode_err = 1;
 	}
-	if ((opcode_argint = atoi(opcode_arg)) == 0 && strcmp(opcode_arg, "0") != 0)
+	if ((oc_argint = atoi(opcode_arg)) == 0 && strcmp(opcode_arg, "0") != 0)
 	{
 		fprintf(stderr, "L%d: usage: push integer\n", line_number);
 		global_vars.opcode_err = 1;
 	}
-	add_dnodeint(stack, opcode_argint);
+	add_dnodeint(stack, oc_argint);
 }
 
 /**
- * _pall - prints items from stack
- * @stack: pointer to first element in stack
- * @line_number: line number of code
- * Return: none
+ * _pall - displays stack items
+ * @stack: first element in stack pointer
+ * @line_number: code line number
+ * Return: no return value
  */
 void _pall(stack_t **stack, unsigned int line_number)
 {
-	stack_t *current;
+	stack_t *curr;
 
         if (*stack && line_number)
 	{
-		current = *stack;
-		while (current)
+		curr = *stack;
+		while (curr)
 		{
-			printf("%d\n", current->n);
-			current = current->next;
+			printf("%d\n", curr->n);
+			curr = curr->next;
 		}
 	}
 }
 
 /**
- * _pint - prints top item from stack
- * @stack: pointer to first element in stack
- * @line_number: line number of code
- * Return: none
+ * _pint - top item from stack is printed
+ * @stack: first element in stack pointer
+ * @line_number: code line number
+ * Return: no return value
  */
 void _pint(stack_t **stack, unsigned int line_number)
 {
@@ -65,14 +65,14 @@ void _pint(stack_t **stack, unsigned int line_number)
 }
 
 /**
- * _pop - removes top item
- * @stack: pointer to first element in stack
- * @line_number: line number of code
- * Return: none
+ * _pop - first item is removed
+ * @stack: first element in stack pointer
+ * @line_number: code line number
+ * Return: no return value
  */
 void _pop(stack_t **stack, unsigned int line_number)
 {
-	stack_t *current, *next;
+	stack_t *curr, *next;
 
 	if (!*stack)
 	{
@@ -81,33 +81,33 @@ void _pop(stack_t **stack, unsigned int line_number)
 	}
 	else
 	{
-		current = *stack;
-		next = current->next;
+		curr = *stack;
+		next = curr->next;
 		if (next)
 			next->prev = NULL;
 		*stack = next;
-		free(current);
+		free(curr);
 	}
 }
 
 /**
- * _swap - swaps top 2 items in stack
- * @stack: pointer to first element in stack
- * @line_number: line number of code
- * Return: none
+ * _swap - first two items in stack are swapped
+ * @stack: first element in stack pointer
+ * @line_number: code line number
+ * Return: no return value
  */
 void _swap(stack_t **stack, unsigned int line_number)
 {
-	stack_t *current, *first;
+	stack_t *curr, *first;
 
 	if (*stack && (*stack)->next)
 	{
-		current = *stack;
-		first = current->next;
+		curr = *stack;
+		first = curr->next;
 		first->prev = NULL;
-		current->next = first->next;
-		first->next = current;
-		current->prev = first;
+		curr->next = first->next;
+		first->next = curr;
+		curr->prev = first;
 		*stack = first;
 	}
 	else
