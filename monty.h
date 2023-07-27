@@ -1,10 +1,10 @@
-#ifndef MONTY_H
-#define MONTY_H
+#ifndef MONTY
+#define MONTY
 
-#include <stdlib.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <stddef.h>
 #include <fcntl.h>
 #include <string.h>
 
@@ -39,11 +39,11 @@ typedef struct instruction_s
 } instruction_t;
 
 /**
- * struct glob_s - structure for global variables
- * @opcode_err: to signal errors
- * @opcode_arg: to signal arguments
+ * struct glob_s - global variables structure
+ * @opcode_err: indicates errors
+ * @opcode_arg: indicates arguments
  *
- * Description: global variables used as signals
+ * Description: signals used for global variables
  */
 typedef struct glob_s
 {
@@ -56,16 +56,16 @@ extern glob_t global_vars;
 FILE *open_file(char *filename);
 int execute_opcode(char *code_line, stack_t **LIFO, unsigned int line_number);
 void (*valid_opcode(char *opcode))(stack_t **stack, unsigned int line_number);
+void _pop(stack_t **stack, unsigned int line_number);
+void _swap(stack_t **stack, unsigned int line_number);
 void _push(stack_t **stack, unsigned int line_number);
 void _pall(stack_t **stack, unsigned int line_number);
 void _pint(stack_t **stack, unsigned int line_number);
-void _pop(stack_t **stack, unsigned int line_number);
-void _swap(stack_t **stack, unsigned int line_number);
+void _mod(stack_t **stack, unsigned int line_number);
 void _add(stack_t **stack, unsigned int line_number);
 void _sub(stack_t **stack, unsigned int line_number);
 void _mul(stack_t **stack, unsigned int line_number);
 void _div(stack_t **stack, unsigned int line_number);
-void _mod(stack_t **stack, unsigned int line_number);
 void _nop(stack_t **stack, unsigned int line_number);
 stack_t *add_dnodeint(stack_t **head, int n);
 
