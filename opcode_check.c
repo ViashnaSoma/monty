@@ -3,26 +3,26 @@
 glob_t global_vars;
 
 /**
- * execute_opcode - tokenises each line to extract opcode
- * @code_line: each line of code
- * @LIFO: stack head
- * @line_number: line number of code
- * Return: negative if fails, else positive
+ * execute_opcode -each line is tokenised to get opcode
+ * @code_line: code line
+ * @LIFO: head of stack
+ * @line_number: code line number
+ * Return: positive for success, negative for failure
  */
 int execute_opcode(char *code_line, stack_t **LIFO, unsigned int line_number)
 {
+	const char *space = " ";
 	char *opcode;
-	const char *delim = " ";
 	void (*f)(stack_t **, unsigned int);
 
-	opcode = strtok(code_line, delim);
+	opcode = strtok(code_line, space);
 	opcode[strcspn(opcode, "\n")] = 0;
 	if (!(f = valid_opcode(opcode)))
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
 		return (-1);
 	}
-	global_vars.opcode_arg = strtok(NULL, delim);
+	global_vars.opcode_arg = strtok(NULL, space);
 	global_vars.opcode_err = 0;
 	f(LIFO, line_number);
 	if (global_vars.opcode_err)
@@ -45,15 +45,15 @@ void (*valid_opcode(char *opcode))(stack_t **stack, unsigned int line_number)
 		{"mul", _mul}, {"div", _div},
 		{"mod", _mod}, {NULL, NULL},
 	};
-	int count = 0;
+	int num = 0;
 
-	while(opcodes[count].opcode)
+	while(opcodes[num].opcode)
 	{
-		if (strcmp(opcodes[count].opcode, opcode) == 0)
+		if (strcmp(opcodes[num].opcode, opcode) == 0)
 		{
-			return (opcodes[count].f);
+			return (opcodes[num].f);
 		}
-		count++;
+		num++;
 	}
-	return (opcodes[count].f);
+	return (opcodes[num].f);
 }
